@@ -576,8 +576,9 @@ void SmokegenASTVisitor::addQPropertyAnnotations(const clang::CXXRecordDecl* D) 
                             auto lookup = D->lookup(Name);
                             for (clang::NamedDecl* namedDecl : lookup) {
                                 if (clang::CXXMethodDecl* method = clang::dyn_cast<clang::CXXMethodDecl>(namedDecl)) {
-                                    auto annotate = clang::AnnotateAttr(clang::SourceRange(), *ctx, llvm::StringRef("qt_property"), 0).clone(*ctx);
-                                    method->addAttr(annotate);
+                                    //auto annotate = clang::AnnotateAttr(*ctx, llvm::StringRef("qt_property"), 0).clone(*ctx);
+                                    //method->addAttr(annotate);
+                                    //TODO
                                 }
                             }
                         }
@@ -588,8 +589,8 @@ void SmokegenASTVisitor::addQPropertyAnnotations(const clang::CXXRecordDecl* D) 
                             auto lookup = D->lookup(Name);
                             for (clang::NamedDecl* namedDecl : lookup) {
                                 if (clang::CXXMethodDecl* method = clang::dyn_cast<clang::CXXMethodDecl>(namedDecl)) {
-                                    auto annotate = clang::AnnotateAttr(clang::SourceRange(), *ctx, llvm::StringRef("qt_property"), 0).clone(*ctx);
-                                    method->addAttr(annotate);
+                                    //auto annotate = clang::AnnotateAttr(clang::SourceRange(), *ctx, llvm::StringRef("qt_property"), 0).clone(*ctx);
+                                    //method->addAttr(annotate);
                                 }
                             }
                         }

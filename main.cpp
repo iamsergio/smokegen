@@ -29,6 +29,7 @@
 
 #include <iostream>
 
+#include <clang/Serialization/PCHContainerOperations.h>
 #include <clang/Tooling/Tooling.h>
 
 #include "options.h"
@@ -245,7 +246,9 @@ int main(int argc, char **argv)
         clang::FileManager FM({"."});
         FM.Retain();
 
-        clang::tooling::ToolInvocation inv(Argv, new SmokegenFrontendAction, &FM);
+        std::shared_ptr<clang::PCHContainerOperations> PCHContainerOps;
+        auto action = std::unique_ptr<clang::FrontendAction>(new SmokegenFrontendAction);
+        clang::tooling::ToolInvocation inv(Argv, std::move(action), &FM, PCHContainerOps);
 
         const EmbeddedFile* f = EmbeddedFiles;
         while (f->filename) {
