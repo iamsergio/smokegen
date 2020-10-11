@@ -78,33 +78,46 @@ llvm_map_components_to_libnames(
     support
 )
 
-target_link_libraries(smokegen
-    Qt5::Core
-    Qt5::Xml
-    -Wl,--start-group
-    clangAST
-    clangAnalysis
-    clangBasic
-    clangDriver
-    clangEdit
-    clangFrontend
-    clangFrontendTool
-    clangLex
-    clangParse
-    clangSema
-    clangEdit
-    clangASTMatchers
-    clangRewrite
-    clangRewriteFrontend
-    clangStaticAnalyzerFrontend
-    clangStaticAnalyzerCheckers
-    clangStaticAnalyzerCore
-    clangSerialization
-    clangToolingCore
-    clangTooling
-    -Wl,--end-group
-    ${llvm_libs}
-)
+if (ARCHLINUX_BUILD_HACK)
+    # Hack for building on Archlinux without having to revamp the build system.
+    # TODO import clazy's llvm/clang cmake helpers
+
+    target_link_libraries(smokegen
+        Qt5::Core
+        Qt5::Xml
+        -Wl,--start-group
+        clang-cpp
+        -Wl,--end-group
+        LLVM)
+else()
+    target_link_libraries(smokegen
+        Qt5::Core
+        Qt5::Xml
+        -Wl,--start-group
+        clangAST
+        clangAnalysis
+        clangBasic
+        clangDriver
+        clangEdit
+        clangFrontend
+        clangFrontendTool
+        clangLex
+        clangParse
+        clangSema
+        clangEdit
+        clangASTMatchers
+        clangRewrite
+        clangRewriteFrontend
+        clangStaticAnalyzerFrontend
+        clangStaticAnalyzerCheckers
+        clangStaticAnalyzerCore
+        clangSerialization
+        clangToolingCore
+        clangTooling
+        -Wl,--end-group
+        ${llvm_libs})
+endif()
+
 
 set_target_properties(smokegen PROPERTIES COMPILE_DEFINITIONS __GENERATOR_BUILDING ENABLE_EXPORTS TRUE)
 set(LLVM_REQUIRES_RTTI ON)
